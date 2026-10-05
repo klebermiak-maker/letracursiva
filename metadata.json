@@ -1,0 +1,6 @@
+{
+  "name": "Letrinhas Cursivas - Jogo Educativo de Caligrafia",
+  "description": "Jogo lúdico e interativo para alunos do 1º e 2º ano praticarem o traçado da letra cursiva com pauta escolar, feedback sonoro e visual imediato, estrelas e figurinhas.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
