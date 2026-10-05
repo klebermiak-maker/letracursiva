@@ -212,7 +212,7 @@ export const LetterTipsPanel: React.FC<LetterTipsPanelProps> = ({
             className="w-full flex items-center justify-center gap-2 py-2.5 px-4 bg-amber-400 hover:bg-amber-500 text-slate-950 font-bold text-xs rounded-xl shadow-xs transition-colors cursor-pointer"
           >
             <GraduationCap className="w-4 h-4 text-amber-950" />
-            <span>Ver Animação no Modo Tutorial</span>
+            <span>Praticar no Tutorial Interativo</span>
           </button>
 
           <button

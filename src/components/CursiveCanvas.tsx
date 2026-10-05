@@ -745,11 +745,11 @@ export const CursiveCanvas: React.FC<CursiveCanvasProps> = ({
                 setIsTutorialActive(true);
                 sound.playClick();
               }}
-              className="flex items-center gap-1.5 px-3 py-1.5 bg-blue-50 hover:bg-blue-100 text-blue-700 font-bold text-xs rounded-xl shadow-xs transition-all cursor-pointer transform hover:scale-102"
-              title="Abrir animação guiada da letra"
+              className="flex items-center gap-1.5 px-3 py-1.5 bg-indigo-50 hover:bg-indigo-100 text-indigo-700 font-bold text-xs rounded-xl shadow-xs transition-all cursor-pointer transform hover:scale-102"
+              title="Abrir Tutorial Interativo passo a passo"
             >
-              <GraduationCap className="w-4 h-4 text-blue-600" />
-              <span>Tutorial</span>
+              <GraduationCap className="w-4 h-4 text-indigo-600" />
+              <span>Tutorial Interativo</span>
             </button>
 
             <button

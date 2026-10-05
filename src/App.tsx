@@ -7,6 +7,7 @@ import React, { useState, useEffect } from 'react';
 import { TopNav, ActiveTab } from './components/TopNav';
 import { CursiveCanvas } from './components/CursiveCanvas';
 import { AlphabetTrack } from './components/AlphabetTrack';
+import { InfiniteRuledSlate } from './components/InfiniteRuledSlate';
 import { WordPractice } from './components/WordPractice';
 import { FreeNotebook } from './components/FreeNotebook';
 import { StickerAlbum } from './components/StickerAlbum';
@@ -15,7 +16,7 @@ import { CelebrationModal } from './components/CelebrationModal';
 import { CURSIVE_LETTERS, INITIAL_STICKERS } from './data/cursiveAlphabet';
 import { LetterData, StickerReward, DailyProgress } from './types/game';
 import { sound } from './utils/audio';
-import { Sparkles, HeartHandshake, User, Check, RefreshCw } from 'lucide-react';
+import { Sparkles, HeartHandshake, User, Check, RefreshCw, BookOpen, Infinity as InfinityIcon } from 'lucide-react';
 
 const DEFAULT_WEEKLY_PROGRESS: DailyProgress[] = [
   { dia: 'Seg', nomeCompleto: 'Segunda-feira', dataIso: '2026-09-29', letrasCompletadas: 4, precisaoMedia: 88, tentativas: 6, estrelas: 11 },
@@ -29,6 +30,7 @@ const DEFAULT_WEEKLY_PROGRESS: DailyProgress[] = [
 
 export default function App() {
   const [activeTab, setActiveTab] = useState<ActiveTab>('alphabet');
+  const [alphabetMode, setAlphabetMode] = useState<'guided' | 'infinite'>('guided');
   const [selectedLetter, setSelectedLetter] = useState<LetterData>(CURSIVE_LETTERS[0]);
   const [studentName, setStudentName] = useState<string>('Amiguinho(a)');
   const [handPreference, setHandPreference] = useState<'right' | 'left'>('right');
@@ -266,23 +268,83 @@ export default function App() {
           </div>
         </div>
 
-        {/* Tab 1: Alphabet Track & Tracing Canvas */}
+        {/* Tab 1: Alphabet Track & Tracing Canvas OR Infinite Ruled Slate */}
         {activeTab === 'alphabet' && (
-          <div className="flex flex-col gap-5 animate-in fade-in duration-200">
-            {/* The interactive cursive drawing canvas */}
-            <CursiveCanvas
-              letter={selectedLetter}
-              onComplete={handleLetterComplete}
-              handPreference={handPreference}
-              onNextLetter={handleNextLetter}
-            />
+          <div className="flex flex-col gap-4 animate-in fade-in duration-200">
+            {/* Mode Switcher inside Alphabet tab */}
+            <div className="flex flex-wrap items-center justify-between gap-3 bg-white/90 backdrop-blur-xs px-4 py-2 rounded-2xl border border-slate-200 shadow-xs">
+              <div className="flex items-center gap-2">
+                <span className="font-display font-bold text-xs sm:text-sm text-slate-800">
+                  Modo de Alfabetização:
+                </span>
+                <span className="text-[11px] text-slate-500 hidden md:inline">
+                  {alphabetMode === 'guided'
+                    ? 'Letras Guiadas com checkpoints, tutorial interativo e desafios'
+                    : 'Pauta Infinita sem restrições ou pontuação'}
+                </span>
+              </div>
 
-            {/* Letter Selection Grid */}
-            <AlphabetTrack
-              selectedLetter={selectedLetter}
-              onSelectLetter={setSelectedLetter}
-              completedLetters={completedLetters}
-            />
+              <div className="flex items-center gap-1.5 p-1 bg-slate-100 rounded-xl text-xs font-bold">
+                <button
+                  onClick={() => {
+                    setAlphabetMode('guided');
+                    sound.playClick();
+                  }}
+                  className={`flex items-center gap-1.5 px-3 py-1.5 rounded-lg transition-all cursor-pointer ${
+                    alphabetMode === 'guided'
+                      ? 'bg-white text-blue-700 shadow-xs'
+                      : 'text-slate-600 hover:text-slate-900'
+                  }`}
+                >
+                  <BookOpen className="w-3.5 h-3.5" />
+                  <span>Letras Guiadas</span>
+                </button>
+
+                <button
+                  onClick={() => {
+                    setAlphabetMode('infinite');
+                    sound.playCelebration();
+                    sound.speak('Modo Pauta Infinita! Pratique livremente o traçado sobre a pauta escolar!');
+                  }}
+                  className={`flex items-center gap-1.5 px-3.5 py-1.5 rounded-lg transition-all cursor-pointer ${
+                    alphabetMode === 'infinite'
+                      ? 'bg-gradient-to-r from-amber-400 to-yellow-400 text-slate-950 shadow-xs'
+                      : 'text-slate-600 hover:text-slate-900'
+                  }`}
+                >
+                  <InfinityIcon className="w-3.5 h-3.5" />
+                  <span>Pauta Infinita ♾️</span>
+                </button>
+              </div>
+            </div>
+
+            {/* Guided Mode */}
+            {alphabetMode === 'guided' && (
+              <>
+                {/* The interactive cursive drawing canvas */}
+                <CursiveCanvas
+                  letter={selectedLetter}
+                  onComplete={handleLetterComplete}
+                  handPreference={handPreference}
+                  onNextLetter={handleNextLetter}
+                />
+
+                {/* Letter Selection Grid */}
+                <AlphabetTrack
+                  selectedLetter={selectedLetter}
+                  onSelectLetter={setSelectedLetter}
+                  completedLetters={completedLetters}
+                />
+              </>
+            )}
+
+            {/* Infinite Ruled Slate Mode */}
+            {alphabetMode === 'infinite' && (
+              <InfiniteRuledSlate
+                handPreference={handPreference}
+                studentName={studentName}
+              />
+            )}
           </div>
         )}
 
